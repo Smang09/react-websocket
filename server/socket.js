@@ -12,7 +12,8 @@ export const socketHandler = (io) => {
     });
 
     client.on("new message", (message) => {
-      io.emit("new message", { sender: username, content: message });
+      const timestamp = new Date().toISOString();
+      io.emit("new message", { sender: username, content: message, timestamp });
     });
 
     client.on("disconnect", () => {

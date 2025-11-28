@@ -5,6 +5,7 @@ export interface Message {
   sender: string;
   content: string;
   isSystem?: boolean;
+  timestamp?: string;
 }
 
 const SERVER_URL = "http://localhost:3000";

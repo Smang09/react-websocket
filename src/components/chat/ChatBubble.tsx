@@ -3,26 +3,49 @@ import { colors } from "../../styles/colors";
 
 interface Props {
   type: "system" | "incoming" | "outgoing";
+  timestamp?: string | null;
   children: React.ReactNode;
 }
 
-const ChatBubble = ({ type, children }: Props) => {
-  return <Container type={type}>{children}</Container>;
+const ChatBubble = ({ type, timestamp, children }: Props) => {
+  const formattedTime = timestamp
+    ? new Date(timestamp).toLocaleTimeString("ko-KR", {
+        hour: "numeric",
+        minute: "numeric",
+      })
+    : null;
+
+  return (
+    <Container type={type}>
+      {formattedTime && <TimeText>{formattedTime}</TimeText>}
+      <MessageBox type={type}>{children}</MessageBox>
+    </Container>
+  );
 };
+
+const containerStyles = () => ({
+  outgoing: css`
+    justify-content: flex-end;
+  `,
+  incoming: css`
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+  `,
+  system: css`
+    justify-content: center;
+  `,
+});
 
 const bubbleStyles = (theme: DefaultTheme) => ({
   outgoing: css`
-    margin: 0 0 0 auto;
     background: ${colors.primary};
     color: ${colors.white};
   `,
   incoming: css`
-    margin: 0 auto 0 0;
     background: ${theme.colors.gray};
     color: ${theme.colors.text};
   `,
   system: css`
-    margin: 0 auto;
     background: transparent;
     color: ${theme.colors.text};
     font-size: 12px;
@@ -31,6 +54,18 @@ const bubbleStyles = (theme: DefaultTheme) => ({
 });
 
 const Container = styled.div<{ type: Props["type"] }>`
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  ${({ type }) => containerStyles()[type]}
+`;
+
+const TimeText = styled.span`
+  margin-bottom: 4px;
+  font-size: 11px;
+`;
+
+const MessageBox = styled.div<{ type: Props["type"] }>`
   width: fit-content;
   max-width: 60%;
   padding: 10px;
