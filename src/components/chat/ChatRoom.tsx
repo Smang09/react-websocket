@@ -3,7 +3,7 @@ import useChatSocket, { type Message } from "../../hooks/useChatSocket";
 import styled from "styled-components";
 import ChatInput from "./ChatInput";
 import ChatRoomHeader from "./ChatRoomHeader";
-import JoinChatRoom from "./JoinChatRoom";
+import JoinChatRoomHeader from "./JoinChatRoomHeader";
 import ChatBubble from "./ChatBubble";
 
 const getType = (message: Message, username: string) => {
@@ -35,7 +35,7 @@ const ChatRoom = () => {
       {isConnected ? (
         <ChatRoomHeader username={username} disconnect={disconnectSocket} />
       ) : (
-        <JoinChatRoom connect={connectSocket} />
+        <JoinChatRoomHeader connect={connectSocket} />
       )}
       <ChatList ref={chatListRef}>
         {messages.map((message, index) => {

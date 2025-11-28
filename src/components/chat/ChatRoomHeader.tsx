@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { MdLogout } from "react-icons/md";
+import ThemeToggle from "../ThemeToggle";
+import IconButton from "../common/IconButton";
 
 interface Props {
   username: string;
@@ -10,13 +12,15 @@ const ChatRoomHeader = ({ username, disconnect }: Props) => {
   return (
     <Container>
       <UserNameBox>{username}</UserNameBox>
-      <DisconnectButton
-        onClick={disconnect}
-        aria-label="채팅방 나가기"
-        title="채팅방 나가기"
-      >
-        <MdLogout size={20} />
-      </DisconnectButton>
+      <ButtonRow>
+        <IconButton
+          type="submit"
+          icon={MdLogout}
+          label="채팅방 나가기"
+          onClick={disconnect}
+        />
+        <ThemeToggle />
+      </ButtonRow>
     </Container>
   );
 };
@@ -27,7 +31,7 @@ const Container = styled.div`
   justify-content: space-between;
   gap: 20px;
   padding: 10px 20px;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray};
 `;
 
 const UserNameBox = styled.div`
@@ -38,14 +42,10 @@ const UserNameBox = styled.div`
   text-overflow: ellipsis;
 `;
 
-const DisconnectButton = styled.button`
+const ButtonRow = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 6px;
+  gap: 10px;
 `;
 
 export default ChatRoomHeader;

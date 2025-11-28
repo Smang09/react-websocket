@@ -13,18 +13,18 @@ const ChatBubble = ({ type, children }: Props) => {
 const bubbleStyles = (theme: DefaultTheme) => ({
   outgoing: css`
     margin: 0 0 0 auto;
-    background: ${theme.colors.primary};
+    background: ${colors.primary};
     color: ${colors.white};
   `,
   incoming: css`
     margin: 0 auto 0 0;
     background: ${theme.colors.gray};
-    color: ${colors.black};
+    color: ${theme.colors.text};
   `,
   system: css`
     margin: 0 auto;
     background: transparent;
-    color: ${colors.black};
+    color: ${theme.colors.text};
     font-size: 12px;
     text-align: center;
   `,
@@ -35,6 +35,7 @@ const Container = styled.div<{ type: Props["type"] }>`
   max-width: 60%;
   padding: 10px;
   border-radius: 8px;
+  font-size: 14px;
   word-break: break-word;
   ${({ theme, type }) => bubbleStyles(theme)[type]}
 `;

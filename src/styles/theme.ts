@@ -2,24 +2,18 @@ import type { DefaultTheme } from "styled-components";
 
 export const lightTheme: DefaultTheme = {
   colors: {
-    background: "#fff",
-    border: "#dee2e6",
-    text: "#000",
-
-    primary: "#1057ff",
-    secondary: "#2ecc71",
-    gray: "#f2f4f5",
+    background: "#F7F8FA",
+    inputBackground: "#F7F8FA",
+    text: "#111318",
+    gray: "#E6E7EA",
   },
 };
 
 export const darkTheme: DefaultTheme = {
   colors: {
     background: "#131b24",
-    border: "#ced4da",
-    text: "#fff",
-
-    primary: "#0e59ff",
-    secondary: "#27ae60",
+    inputBackground: "#0a0f1b",
+    text: "#E6E7EA",
     gray: "#212834",
   },
 };

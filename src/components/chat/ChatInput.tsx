@@ -42,13 +42,14 @@ const Container = styled.form`
   display: flex;
   gap: 20px;
   padding: 20px;
-  border-top: 1px solid ${({ theme }) => theme.colors.border};
+  border-top: 1px solid ${({ theme }) => theme.colors.gray};
 `;
 
 const MessageInput = styled.input`
   flex: 1;
   padding: 10px;
-  border: 1px solid ${({ theme }) => theme.colors.border};
+  background: ${({ theme }) => theme.colors.inputBackground};
+  border: 1px solid ${({ theme }) => theme.colors.gray};
   border-radius: 6px;
 `;
 
@@ -56,6 +57,9 @@ const SendButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  &:disabled {
+    color: ${({ theme }) => theme.colors.gray};
+  }
 `;
 
 export default ChatInput;

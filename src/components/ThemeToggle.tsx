@@ -1,13 +1,22 @@
-import styled from "styled-components";
+import useThemeStore from "../store/theme";
+import { MdOutlineLightMode } from "react-icons/md";
+import { MdNightlight } from "react-icons/md";
+import IconButton from "./common/IconButton";
 
-interface Props {
-  toggleTheme: () => void;
-}
+const ThemeToggle = () => {
+  const { theme, setTheme } = useThemeStore();
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
 
-const ThemeToggle = ({ toggleTheme }: Props) => {
-  return <Container type="button" onClick={toggleTheme}></Container>;
+  return (
+    <IconButton
+      type="button"
+      icon={theme === "light" ? MdOutlineLightMode : MdNightlight}
+      label="색상 테마 변경"
+      onClick={toggleTheme}
+    />
+  );
 };
-
-const Container = styled.button``;
 
 export default ThemeToggle;

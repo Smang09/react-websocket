@@ -1,12 +1,14 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { MdLogin } from "react-icons/md";
+import ThemeToggle from "../ThemeToggle";
+import IconButton from "../common/IconButton";
 
 interface Props {
   connect: (username: string) => void;
 }
 
-const JoinChatRoom = ({ connect }: Props) => {
+const JoinChatRoomHeader = ({ connect }: Props) => {
   const [username, setUsername] = useState("");
   const trimmedUsername = username.trim();
 
@@ -24,14 +26,15 @@ const JoinChatRoom = ({ connect }: Props) => {
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
-      <ConnectButton
-        type="submit"
-        disabled={!trimmedUsername}
-        aria-label="채팅방 들어가기"
-        title="채팅방 들어가기"
-      >
-        <MdLogin size={20} />
-      </ConnectButton>
+      <ButtonRow>
+        <IconButton
+          type="submit"
+          icon={MdLogin}
+          label="채팅방 들어가기"
+          disabled={!trimmedUsername}
+        />
+        <ThemeToggle />
+      </ButtonRow>
     </Container>
   );
 };
@@ -42,25 +45,21 @@ const Container = styled.form`
   justify-content: space-between;
   gap: 20px;
   padding: 10px 20px;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray};
 `;
 
 const UserNameInput = styled.input`
   flex: 1;
   max-width: 300px;
   padding: 10px;
-  border: 1px solid ${({ theme }) => theme.colors.border};
+  border: 1px solid ${({ theme }) => theme.colors.gray};
   border-radius: 6px;
 `;
 
-const ConnectButton = styled.button`
+const ButtonRow = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 6px;
+  gap: 10px;
 `;
 
-export default JoinChatRoom;
+export default JoinChatRoomHeader;
