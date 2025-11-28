@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import ChatBubble from "./ChatBubble";
 import type { Message } from "../../hooks/useChatSocket";
-import { useEffect, useRef } from "react";
+import { Virtuoso } from "react-virtuoso";
 
 interface Props {
   username: string;
@@ -9,8 +9,6 @@ interface Props {
 }
 
 const ChatList = ({ username, messages }: Props) => {
-  const chatListRef = useRef<HTMLUListElement>(null);
-
   const getType = (message: Message) =>
     message.isSystem
       ? "system"
@@ -18,18 +16,14 @@ const ChatList = ({ username, messages }: Props) => {
       ? "outgoing"
       : "incoming";
 
-  useEffect(() => {
-    if (chatListRef.current) {
-      chatListRef.current.scrollTop = chatListRef.current.scrollHeight;
-    }
-  }, [messages]);
-
   return (
-    <Container ref={chatListRef}>
-      {messages.map((message, index) => {
+    <Virtuoso<Message>
+      data={messages}
+      followOutput={true}
+      itemContent={(index, message) => {
         const type = getType(message);
         const prevType = messages[index - 1] && getType(messages[index - 1]);
-        const showSpacing = index > 0 && prevType !== type;
+        const paddingTop = index === 0 ? 6 : prevType !== type ? 30 : 0;
 
         let showTimestamp = true;
         const nextMessage = messages[index + 1];
@@ -46,7 +40,7 @@ const ChatList = ({ username, messages }: Props) => {
         }
 
         return (
-          <ChatItem key={index} showSpacing={showSpacing}>
+          <ChatItem $paddingTop={paddingTop}>
             <ChatBubble
               type={type}
               timestamp={showTimestamp ? message.timestamp : null}
@@ -55,22 +49,15 @@ const ChatList = ({ username, messages }: Props) => {
             </ChatBubble>
           </ChatItem>
         );
-      })}
-    </Container>
+      }}
+    />
   );
 };
 
-const Container = styled.ul`
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px;
-`;
-
-const ChatItem = styled.li<{ showSpacing: boolean }>`
-  margin-top: ${(props) => (props.showSpacing ? "20px" : "0")};
+const ChatItem = styled.div<{ $paddingTop: number }>`
+  padding: 0 20px;
+  padding-top: ${(props) => props.$paddingTop}px;
+  padding-bottom: 6px;
 `;
 
 export default ChatList;

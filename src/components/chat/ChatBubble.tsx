@@ -57,7 +57,7 @@ const Container = styled.div<{ type: Props["type"] }>`
   display: flex;
   align-items: flex-end;
   gap: 6px;
-  ${({ type }) => containerStyles()[type]}
+  ${({ type }) => containerStyles()[type]};
 `;
 
 const TimeText = styled.span`
