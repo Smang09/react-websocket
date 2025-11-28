@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 
-interface Message {
+export interface Message {
   sender: string;
   content: string;
+  isSystem?: boolean;
 }
 
 const SERVER_URL = "http://localhost:3000";
@@ -11,6 +12,8 @@ const SERVER_URL = "http://localhost:3000";
 const useChatSocket = () => {
   const [socket, setSocket] = useState<Socket>();
   const [isConnected, setIsConnected] = useState(false);
+
+  const [username, setUsername] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
 
   const connectSocket = useCallback((username: string) => {
@@ -21,6 +24,7 @@ const useChatSocket = () => {
 
     _socket.connect();
     setSocket(_socket);
+    setUsername(username);
   }, []);
 
   const disconnectSocket = useCallback(() => {
@@ -61,6 +65,7 @@ const useChatSocket = () => {
   }, [onConnected, onDisconnected, onMessageReceived, socket]);
 
   return {
+    username,
     messages,
     isConnected,
     connectSocket,

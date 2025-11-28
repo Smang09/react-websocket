@@ -8,6 +8,7 @@ export const socketHandler = (io) => {
     client.broadcast.emit("new message", {
       sender: ADMIN_NAME,
       content: `${username}님이 들어왔습니다.`,
+      isSystem: true,
     });
 
     client.on("new message", (message) => {
@@ -19,6 +20,7 @@ export const socketHandler = (io) => {
       io.emit("new message", {
         sender: ADMIN_NAME,
         content: `${username}님이 나갔습니다.`,
+        isSystem: true,
       });
     });
   });
