@@ -2,13 +2,10 @@ import styled from "styled-components";
 import { MdLogout } from "react-icons/md";
 import ThemeToggle from "../ThemeToggle";
 import IconButton from "../common/IconButton";
+import useChatStore from "../../store/chat";
 
-interface Props {
-  username: string;
-  disconnect: () => void;
-}
-
-const ChatRoomHeader = ({ username, disconnect }: Props) => {
+const ChatRoomHeader = () => {
+  const { username, leaveRoom } = useChatStore();
   return (
     <Container>
       <UserNameBox>{username}</UserNameBox>
@@ -17,7 +14,7 @@ const ChatRoomHeader = ({ username, disconnect }: Props) => {
           type="submit"
           icon={MdLogout}
           label="채팅방 나가기"
-          onClick={disconnect}
+          onClick={leaveRoom}
         />
         <ThemeToggle />
       </ButtonRow>

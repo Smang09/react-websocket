@@ -1,14 +1,11 @@
 import styled from "styled-components";
 import ChatBubble from "./ChatBubble";
-import type { Message } from "../../hooks/useChatSocket";
 import { Virtuoso } from "react-virtuoso";
+import { type Message } from "../../store/chat";
+import useChatStore from "../../store/chat";
 
-interface Props {
-  username: string;
-  messages: Message[];
-}
-
-const ChatList = ({ username, messages }: Props) => {
+const ChatList = () => {
+  const { username, messages } = useChatStore();
   const getType = (message: Message) =>
     message.isSystem
       ? "system"

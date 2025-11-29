@@ -1,13 +1,10 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { MdSend } from "react-icons/md";
+import useChatStore from "../../store/chat";
 
-interface Props {
-  isConnected: boolean;
-  sendMessage: (message: string) => void;
-}
-
-const ChatInput = ({ isConnected, sendMessage }: Props) => {
+const ChatInput = () => {
+  const { isConnected, sendMessage } = useChatStore();
   const [inputMessage, setInputMessage] = useState("");
   const message = inputMessage.trim();
 

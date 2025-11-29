@@ -1,6 +1,5 @@
 import useThemeStore from "../store/theme";
-import { MdOutlineLightMode } from "react-icons/md";
-import { MdNightlight } from "react-icons/md";
+import { MdOutlineLightMode, MdNightlight } from "react-icons/md";
 import IconButton from "./common/IconButton";
 
 const ThemeToggle = () => {
