@@ -4,8 +4,7 @@ import { io, Socket } from "socket.io-client";
 export interface Message {
   sender: string;
   content: string;
-  isSystem?: boolean;
-  timestamp?: string;
+  timestamp: string;
 }
 
 interface ChatState {
@@ -59,9 +58,6 @@ const useChatStore = create<ChatState>((set, get) => ({
     newSocket.on("joined_room", (roomCode) =>
       set({ room: roomCode, isHost: false })
     );
-    newSocket.on("left_room", () =>
-      set({ room: "", isHost: false, messages: [] })
-    );
     newSocket.on("room_not_found", () => alert("방을 찾을 수 없습니다."));
 
     newSocket.connect();
@@ -83,6 +79,7 @@ const useChatStore = create<ChatState>((set, get) => ({
   leaveRoom: () => {
     const { socket, room } = get();
     socket?.emit("leave_room", room);
+    set({ room: "", isHost: false, messages: [] });
   },
   sendMessage: (content) => {
     const { socket, room } = get();

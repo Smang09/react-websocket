@@ -31,13 +31,14 @@ export const socketHandler = (io) => {
         return;
       }
 
+      const timestamp = new Date().toISOString();
       room.users.push(client.id);
       client.join(roomCode);
       client.emit("joined_room", roomCode);
       client.broadcast.to(roomCode).emit("new_message", {
         sender: ADMIN_NAME,
         content: `${username}님이 들어왔습니다.`,
-        isSystem: true,
+        timestamp,
       });
     });
 
@@ -64,26 +65,27 @@ export const socketHandler = (io) => {
       }
 
       if (room.host === client.id) {
+        const timestamp = new Date().toISOString();
         client.broadcast.to(roomCode).emit("new_message", {
           sender: ADMIN_NAME,
           content: "방장이 나가서 방이 종료되었습니다.",
-          isSystem: true,
+          timestamp,
         });
         delete rooms[roomCode];
         console.log(`[${roomCode}]방이 삭제되었습니다. (방장 퇴장)`);
       } else {
         const userIndex = room.users.indexOf(client.id);
         if (userIndex !== -1) {
+          const timestamp = new Date().toISOString();
           room.users.splice(userIndex, 1);
           client.broadcast.to(roomCode).emit("new_message", {
             sender: ADMIN_NAME,
             content: `${username}님이 나갔습니다.`,
-            isSystem: true,
+            timestamp,
           });
         }
       }
 
-      client.emit("left_room", roomCode);
       client.leave(roomCode);
     });
 
@@ -96,19 +98,21 @@ export const socketHandler = (io) => {
         if (userIndex === -1) continue;
 
         if (room.host === client.id) {
+          const timestamp = new Date().toISOString();
           client.broadcast.to(roomCode).emit("new_message", {
             sender: ADMIN_NAME,
             content: "방장이 나가서 방이 종료되었습니다.",
-            isSystem: true,
+            timestamp,
           });
           delete rooms[roomCode];
           console.log(`[${roomCode}]방이 삭제되었습니다. (방장 퇴장)`);
         } else {
+          const timestamp = new Date().toISOString();
           room.users.splice(userIndex, 1);
           client.broadcast.to(roomCode).emit("new_message", {
             sender: ADMIN_NAME,
             content: `${username}님이 나갔습니다.`,
-            isSystem: true,
+            timestamp,
           });
         }
 

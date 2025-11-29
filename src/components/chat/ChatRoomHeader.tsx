@@ -3,13 +3,18 @@ import { MdLogout } from "react-icons/md";
 import ThemeToggle from "../ThemeToggle";
 import IconButton from "../common/IconButton";
 import useChatStore from "../../store/chat";
+import useClipboardCopy from "../../hooks/useClipboardCopy";
 
 const ChatRoomHeader = () => {
-  const { username, leaveRoom } = useChatStore();
+  const { username, room, leaveRoom } = useChatStore();
+  const { isCopied, copy } = useClipboardCopy();
   return (
     <Container>
-      <UserNameBox>{username}</UserNameBox>
-      <ButtonRow>
+      <UserNameText>{username}</UserNameText>
+      <Row>
+        <RoomCodeButton type="button" onClick={() => copy(room)}>
+          Room Code: {isCopied ? "Copied" : room}
+        </RoomCodeButton>
         <IconButton
           type="submit"
           icon={MdLogout}
@@ -17,7 +22,7 @@ const ChatRoomHeader = () => {
           onClick={leaveRoom}
         />
         <ThemeToggle />
-      </ButtonRow>
+      </Row>
     </Container>
   );
 };
@@ -31,7 +36,7 @@ const Container = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray};
 `;
 
-const UserNameBox = styled.div`
+const UserNameText = styled.div`
   max-width: 300px;
   font-weight: bold;
   overflow: hidden;
@@ -39,7 +44,12 @@ const UserNameBox = styled.div`
   text-overflow: ellipsis;
 `;
 
-const ButtonRow = styled.div`
+const RoomCodeButton = styled.button`
+  margin-right: 10px;
+  font-size: 14px;
+`;
+
+const Row = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;

@@ -3,11 +3,12 @@ import { colors } from "../../styles/colors";
 
 interface Props {
   type: "system" | "incoming" | "outgoing";
+  sender?: string | null;
   timestamp?: string | null;
   children: React.ReactNode;
 }
 
-const ChatBubble = ({ type, timestamp, children }: Props) => {
+const ChatBubble = ({ type, sender, timestamp, children }: Props) => {
   const formattedTime = timestamp
     ? new Date(timestamp).toLocaleTimeString("ko-KR", {
         hour: "numeric",
@@ -18,7 +19,10 @@ const ChatBubble = ({ type, timestamp, children }: Props) => {
   return (
     <Container type={type}>
       {formattedTime && <TimeText>{formattedTime}</TimeText>}
-      <MessageBox type={type}>{children}</MessageBox>
+      <Column type={type}>
+        {sender && <SenderText>{sender}</SenderText>}
+        <MessageBox type={type}>{children}</MessageBox>
+      </Column>
     </Container>
   );
 };
@@ -33,6 +37,18 @@ const containerStyles = () => ({
   `,
   system: css`
     justify-content: center;
+  `,
+});
+
+const columnStyles = () => ({
+  outgoing: css`
+    align-items: flex-end;
+  `,
+  incoming: css`
+    align-items: flex-start;
+  `,
+  system: css`
+    align-items: center;
   `,
 });
 
@@ -65,9 +81,20 @@ const TimeText = styled.span`
   font-size: 11px;
 `;
 
-const MessageBox = styled.div<{ type: Props["type"] }>`
-  width: fit-content;
+const Column = styled.div<{ type: Props["type"] }>`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   max-width: 60%;
+  ${({ type }) => columnStyles()[type]};
+`;
+
+const SenderText = styled.span`
+  margin: 0 4px;
+  font-size: 12px;
+`;
+
+const MessageBox = styled.div<{ type: Props["type"] }>`
   padding: 10px;
   border-radius: 8px;
   font-size: 14px;

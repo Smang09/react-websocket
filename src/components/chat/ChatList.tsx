@@ -3,11 +3,12 @@ import ChatBubble from "./ChatBubble";
 import { Virtuoso } from "react-virtuoso";
 import { type Message } from "../../store/chat";
 import useChatStore from "../../store/chat";
+import { ADMIN_NAME } from "../../constants/chat";
 
 const ChatList = () => {
   const { username, messages } = useChatStore();
   const getType = (message: Message) =>
-    message.isSystem
+    message.sender === ADMIN_NAME
       ? "system"
       : message.sender === username
       ? "outgoing"
@@ -18,28 +19,30 @@ const ChatList = () => {
       data={messages}
       followOutput={true}
       itemContent={(index, message) => {
-        const type = getType(message);
-        const prevType = messages[index - 1] && getType(messages[index - 1]);
-        const paddingTop = index === 0 ? 6 : prevType !== type ? 30 : 0;
-
-        let showTimestamp = true;
+        const prevMessage = messages[index - 1];
         const nextMessage = messages[index + 1];
 
-        if (message.timestamp && nextMessage?.timestamp) {
-          const isSameType = getType(nextMessage) === type;
+        const isFirstItem =
+          !prevMessage || prevMessage.sender !== message.sender;
+        let isLastItem = true;
+
+        if (nextMessage) {
           const curTime = new Date(message.timestamp);
           const nextTime = new Date(nextMessage.timestamp);
           const isSameMinute =
             Math.floor(curTime.getTime() / 60000) ===
             Math.floor(nextTime.getTime() / 60000);
-
-          showTimestamp = !isSameType || !isSameMinute;
+          isLastItem = !isSameMinute || nextMessage.sender !== message.sender;
         }
 
+        const showSender = message.sender !== ADMIN_NAME && isFirstItem;
+        const showTimestamp = message.sender !== ADMIN_NAME && isLastItem;
+
         return (
-          <ChatItem $paddingTop={paddingTop}>
+          <ChatItem $paddingTop={isFirstItem ? 30 : 0}>
             <ChatBubble
-              type={type}
+              type={getType(message)}
+              sender={showSender ? message.sender : null}
               timestamp={showTimestamp ? message.timestamp : null}
             >
               {message.content}
